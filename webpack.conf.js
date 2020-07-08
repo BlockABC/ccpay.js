@@ -24,7 +24,7 @@ module.exports = function (env = {}, argv) {
     },
     output: {
       path: DIST,
-      filename: `${pkg.name}.js`,
+      filename: `${pkg.filename}.js`,
       libraryTarget: 'umd',
       library: 'CCPay',
       libraryExport: 'default',
@@ -76,7 +76,7 @@ module.exports = function (env = {}, argv) {
     // 生成 .min 格式
     const minifiedConfig = merge(config, {
       output: {
-        filename: `${pkg.name}.min.js`
+        filename: `${pkg.filename}.min.js`
       },
       optimization: {
         minimize: true

@@ -1,5 +1,6 @@
 {
-  "name": "ccpay",
+  "name": "ccpay.js",
+  "buildname": "ccpay",
   "version": "0.0.1",
   "description": "The only and best SDK for CCPay application development.",
   "repository": "https://github.com/BlockABC/ccpay.js",
