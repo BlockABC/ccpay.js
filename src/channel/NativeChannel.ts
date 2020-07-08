@@ -5,7 +5,7 @@ import { logger } from '../common/logger'
 import { BasicChannel } from './BasicChannel'
 import {
   isRpcEvent,
-  JsonRpcResponse, JsonRpcEvent, isRpcResponse,
+  JsonRpcResponse, JsonRpcEvent, isRpcResponse, JsonRpcRequest,
 } from './JsonRpc'
 
 export interface IChannel {
@@ -43,13 +43,13 @@ export class NativeChannel extends BasicChannel implements IChannel {
     return JSON.stringify(data)
   }
 
-  postMessage (data: any): void {
+  postMessage (data: JsonRpcRequest | JsonRpcEvent): void {
     const requestChannel = this.requestChannel
 
     if (this.env.isIOS) {
       this.log.debug(`NativeChannel send to ios ${requestChannel}`)
 
-      if (window.webkit?.messageHandlers?.[requestChannel as any]?.postMessage) {
+      if (window.webkit?.messageHandlers?.[requestChannel]?.postMessage) {
         window.webkit.messageHandlers[requestChannel].postMessage(data)
       }
       else {
@@ -74,8 +74,7 @@ export class NativeChannel extends BasicChannel implements IChannel {
     else {
       this.log.info(`
         Development runtime environment, no data will be sent.
-        You may create mock response like this in console:
-        NativeChannel.response(JSON.stringify(JSON.stringify( { jsonrpc: '${data.jsonrpc as string}', id: '${data.id as string}', result: your expected response object } )))
+        You may mock response by 'window.CCPayNativeClientCallJS({ jsonrpc: '${data.jsonrpc}', id: '${(data as any).id}', result: your expected response object })'
       `)
     }
   }
@@ -120,6 +119,9 @@ export class NativeChannel extends BasicChannel implements IChannel {
         logger.debug('CCPayNativeClientResponse result:', result)
         responsePromise.resolve(result)
       }
+    }
+    else {
+      logger.debug('NativeChanel can not handle message', msg)
     }
   }
 }

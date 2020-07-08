@@ -22,6 +22,15 @@ ccpay.requestUserInfo()
   .then(console.log)
   .catch(console.log)
 ```
+响应
+```json
+{
+    "sys_id": "893sfdjdu38dj389dj3",
+    "nickname": "God",
+    "avatar": "https://baidu.com/a.png",
+    "platform": "wechat"
+}
+```
 
 ### 充值
 唤起充值后
@@ -29,8 +38,24 @@ ccpay.requestUserInfo()
 ccpay.requestDeposit({
   symbol: 'BCH'
 })
-  .then(console.log)
+  .then(res => {
+    if (res) {
+      console.log(res)
+      alert('充值成功')
+    }
+    else {
+      alert('用户取消充值')
+    }
+  })
   .catch(console.error)
+```
+充值成功返回值，失败返回空(null)
+```json
+{
+  "record_id": "record_id_xyz123",
+  "symbol": "BCH",
+  "amount": "123.456"
+}
 ```
 
 ### 客户端版本
