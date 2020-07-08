@@ -17,6 +17,7 @@ export interface JsonRpcResponse {
   result: object,
   error: {
     code: number,
+    errorno?: string, // used for trace error chain
     message: string,
     data: object,
   },
