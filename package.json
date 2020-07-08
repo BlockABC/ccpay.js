@@ -1,95 +1,75 @@
 {
   "name": "ccpay",
-  "version": "1.0.0",
-  "description": "CCPay Application",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
-  "repository": "https://github.com/zgayjjf/ccpay",
+  "version": "0.0.1",
+  "description": "The only and best SDK for CCPay application development.",
+  "repository": "https://github.com/BlockABC/ccpay.js",
   "license": "MIT",
-  "keywords": [],
+  "main": "./lib/index.js",
+  "module": "./module/index.js",
+  "browser": "./dist/ccpay.umd.js",
+  "types": "./types/index.d.ts",
+  "files": [
+    "src/",
+    "cjs/",
+    "esm/",
+    "dist/",
+    "types/",
+    "public/"
+  ],
   "scripts": {
-    "describe": "npm-scripts-info",
-    "build": "run-s clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
-    "fix": "run-s fix:*",
-    "fix:prettier": "prettier \"src/**/*.ts\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "test": "run-s build test:*",
-    "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
-    "test:unit": "nyc --silent ava",
-    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
-    "cov": "run-s build test:unit cov:html && open-cli coverage/index.html",
-    "cov:html": "nyc report --reporter=html",
-    "cov:send": "nyc report --reporter=lcov && codecov",
-    "cov:check": "nyc report && nyc check-coverage --lines 100 --functions 100 --branches 100",
-    "doc": "run-s doc:html && open-cli build/docs/index.html",
-    "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
-    "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
-    "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
-    "version": "standard-version",
-    "reset": "git clean -dfx && git reset --hard && npm i",
-    "clean": "trash build test",
-    "prepare-release": "run-s reset test cov:check doc:html version doc:publish"
+    "build": "npm run build:esm && npm run build:cjs && npm run build:umd",
+    "build:umd": "webpack --mode=production --config webpack.conf.js",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:analysis": "webpack --mode=production --env.analysis --config webpack.conf.js",
+    "dev": "webpack-dev-server --mode=development --config webpack.conf.js",
+    "lint": "eslint --ext .ts --fix src/ test/",
+    "lint:nofix": "eslint --ext .ts src/ test/",
+    "test": "jest",
+    "test:coverage": "jest --collect-coverage",
+    "commit": "npx git-cz",
+    "release": "node release.js",
+    "pm2:reload": "pm2 reload ecosystem.config.js --only ccpay"
   },
-  "scripts-info": {
-    "info": "Display information about the package scripts",
-    "build": "Clean and rebuild the project",
-    "fix": "Try to automatically fix any linting problems",
-    "test": "Lint and unit test the project",
-    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
-    "cov": "Rebuild, run tests, then create and open the coverage report",
-    "doc": "Generate HTML API documentation and open it in a browser",
-    "doc:json": "Generate API documentation in typedoc JSON format",
-    "version": "Bump package.json version, update CHANGELOG.md, tag release",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
+  "keywords": [
+    "ccpay",
+    "api",
+    "service"
+  ],
+  "author": "BlockABC FE Team",
+  "dependencies": {
+    "eventemitter3": "^4.0.0",
+    "lodash-es": "^4.17.15",
+    "loglevel": "^1.6.3",
+    "ts-custom-error": "^3.0.0"
   },
-  "engines": {
-    "node": ">=8.9"
-  },
-  "dependencies": {},
   "devDependencies": {
-    "@bitjson/npm-scripts-info": "^1.0.0",
-    "@bitjson/typedoc": "^0.15.0-0",
-    "@istanbuljs/nyc-config-typescript": "^0.1.3",
-    "ava": "2.2.0",
-    "codecov": "^3.5.0",
-    "cz-conventional-changelog": "^2.1.0",
-    "gh-pages": "^2.0.1",
-    "npm-run-all": "^4.1.5",
-    "nyc": "^14.1.1",
-    "open-cli": "^5.0.0",
-    "prettier": "^1.18.2",
-    "standard-version": "^6.0.1",
-    "trash-cli": "^3.0.0",
-    "tslint": "^5.18.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-immutable": "^6.0.1",
-    "typescript": "^3.5.3"
-  },
-  "ava": {
-    "failFast": true,
-    "files": [
-      "build/main/**/*.spec.js"
-    ],
-    "sources": [
-      "build/main/**/*.js"
-    ]
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.4",
+    "babel-eslint": "^10.0.3",
+    "chokidar": "^3.0.2",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "eslint": "^6.2.2",
+    "eslint-config-blockabc": "^0.9.1",
+    "html-webpack-plugin": "^4.0.1",
+    "jest": "^24.8.0",
+    "semantic-release": "^17.0.4",
+    "ts-jest": "^24.0.0",
+    "ts-loader": "^5.0.0",
+    "typescript": "^3.0.0",
+    "webpack": "^4.29.6",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-merge": "^4.2.1"
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "prettier": {
-    "singleQuote": true
-  },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "exclude": [
-      "**/*.spec.js"
-    ]
   }
 }

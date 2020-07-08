@@ -1,3 +1,0 @@
-# ccpay
-
-CCPay Application

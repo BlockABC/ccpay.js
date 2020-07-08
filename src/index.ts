@@ -1,1 +1,3 @@
-export * from './lib/number';
+import { CCPay } from './CCPay'
+
+export default CCPay

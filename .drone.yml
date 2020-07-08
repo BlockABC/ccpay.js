@@ -1,0 +1,65 @@
+#branches: [master, feature/*, fix/*, hotfix/*]
+pipeline:
+  # 从缓存同步node_modules
+  restore-cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount:
+    - ./node_modules
+    volumes:
+    - /tmp/cache/drone/ccpay.js:/cache
+
+  # build
+  build:
+    image: node:12.4.0
+    commands:
+    - npm install
+    - npm run build
+
+  # 将 node_modules 同步回缓存
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+    - ./node_modules
+    volumes:
+    - /tmp/cache/drone/ccpay.js:/cache
+
+  # deploy to sz_fe1
+  deploy_hk_fe1_b:
+    image: drillster/drone-rsync
+    hosts: ['47.106.173.67']
+    user: root
+    secrets: [ rsync_key ]
+    source: ./
+    target: /data/code/ccpay.js
+    prescript:
+      - mkdir -p /data/code/ccpay.js
+    script:
+      - cd /data/code/ccpay.js
+      - npm run pm2:reload
+    when:
+      branch: [master]
+
+  wechat_success:
+    image: lizheming/drone-wechat
+    secrets: [plugin_corpid, plugin_corp_secret, plugin_agent_id]
+    title: '${DRONE_REPO_NAME} ${DRONE_COMMIT_BRANCH} 构建成功✅'
+    message: "分支: ${DRONE_COMMIT_BRANCH} 序列: ${DRONE_BUILD_NUMBER}. 提交人: ${DRONE_COMMIT_AUTHOR}. 查看详情: ${DRONE_BUILD_LINK} "
+    to_party: 2
+    msg_url: ${DRONE_BUILD_LINK}
+    btn_txt: 详情
+    when:
+      status: [ success ]
+
+  wechat_failed:
+    image: lizheming/drone-wechat
+    secrets: [plugin_corpid, plugin_corp_secret, plugin_agent_id]
+    title: '${DRONE_REPO_NAME} ${DRONE_COMMIT_BRANCH} 构建失败‼️'
+    message: "分支: ${DRONE_COMMIT_BRANCH} 序列: ${DRONE_BUILD_NUMBER}. 提交人: ${DRONE_COMMIT_AUTHOR}. 查看详情: ${DRONE_BUILD_LINK} "
+    to_party: 2
+    msg_url: ${DRONE_BUILD_LINK}
+    btn_txt: 失败详情
+    when:
+      status: [ failure ]
+

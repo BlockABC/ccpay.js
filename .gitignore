@@ -1,11 +1,29 @@
-node_modules
-build
-test
-src/**.js
+# OS
+.DS_Store
+thumbs.db
+
+# IDE & Editor
 .idea/*
 
+# Node
 coverage
-.nyc_output
+node_modules/
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.node_repl_history
+.yarn-integrity
 
+# gitkeep
+!.gitkeep
+
+# Project
+dist/
+cjs/
+esm/
+types/
+.env
 yarn.lock
+package-lock.json
