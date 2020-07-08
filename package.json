@@ -1,13 +1,13 @@
 {
   "name": "ccpay.js",
-  "buildname": "ccpay",
+  "filename": "ccpay",
   "version": "0.0.1",
   "description": "The only and best SDK for CCPay application development.",
   "repository": "https://github.com/BlockABC/ccpay.js",
   "license": "MIT",
   "main": "./lib/index.js",
   "module": "./module/index.js",
-  "browser": "./dist/ccpay.umd.js",
+  "browser": "./dist/ccpay.js",
   "types": "./types/index.d.ts",
   "files": [
     "src/",
