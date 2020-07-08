@@ -10,8 +10,8 @@
   "types": "./types/index.d.ts",
   "files": [
     "src/",
-    "cjs/",
-    "esm/",
+    "lib/",
+    "module/",
     "dist/",
     "types/",
     "public/"
