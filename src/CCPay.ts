@@ -60,19 +60,17 @@ export class CCPay {
       method: 'requestUserInfo',
       params: {
         app_id: this.app_id,
-        business_id: this.business_id,
       }
     })
   }
 
-  public requestDeposit ({ token_symbol }: { token_symbol: string }) {
+  public requestDeposit ({ symbol }: { symbol: string }) {
     return this.channel.request({
       id: shortid('requestDeposit'),
       method: 'requestDeposit',
       params: {
         app_id: this.app_id,
-        business_id: this.business_id,
-        token_symbol,
+        symbol,
       }
     })
   }

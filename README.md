@@ -7,7 +7,6 @@
 import CCPay from 'ccpay'
 const ccpay = new CCPay({
   app_id: 'app_id_xxxx',
-  business_id: 'business_id_xxxxxx'
 })
 ```
 
@@ -28,7 +27,7 @@ ccpay.requestUserInfo()
 唤起充值后
 ```javascript
 ccpay.requestDeposit({
-  token_symbol: 'BCH'
+  symbol: 'BCH'
 })
   .then(console.log)
   .catch(console.error)
