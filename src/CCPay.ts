@@ -3,7 +3,7 @@ import { shortid } from './common/shortid'
 import { Env } from './common/Env'
 import { logger } from './common/logger'
 
-const PostMessageChannel = 'ccpay'
+const PostMessageChannel = 'CCPayNativeBridge'
 
 export class CCPay {
   private readonly channel: NativeChannel
