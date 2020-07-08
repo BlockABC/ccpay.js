@@ -5,7 +5,100 @@
     <title>CCPay Test</title>
 </head>
 <body>
-
+<div id="container"></div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="./ccpay.js"></script>
+<script>
+  let ccpay
+
+  const vue = new Vue({
+    template: `
+      <div>
+        <div>
+          <label>
+
+              <input type="text" v-model="app_id">
+              app_id
+          </label>
+        </div>
+        <div style="marginTop: 10px">
+          <label>
+
+            <input type="text" v-model="business_id">
+            business_id
+          </label>
+        </div>
+        <button @click="onClickInit">初始化</button>
+        <div>
+            <button @click="onClickLogin">获取用户数据</button>
+            <pre>{{userInfo}}</pre>
+        </div>
+        <div>
+            <button @click="onClickRequestDeposit">充值</button>
+            <pre>{{depositResult}}</pre>
+        </div>
+        <h3>数据流</h3>
+        <pre v-for="data in dataFlow">{{data}}</pre>
+      </div>
+    `,
+    data() {
+      return {
+        app_id: localStorage.getItem('ccpay_app_id') || '',
+        business_id: localStorage.getItem('ccpay_business_id') || '',
+
+        userInfo: null,
+        depositResult: null,
+        dataFlow: [],
+      }
+    },
+    mounted() {
+    },
+    methods: {
+      onClickInit() {
+        ccpay = new CCPay({
+          app_id: this.app_id,
+          business_id: this.business_id,
+        })
+
+        const originPostMessage = ccpay.channel.postMessage
+
+        // 接管掉 postMessage
+        ccpay.channel.postMessage = (data) => {
+          this.dataFlow.push('>>>>>>>>>> 发送数据 >>>>>>>>>>')
+          this.dataFlow.push(data)
+          return originPostMessage.call(ccpay.channel, data)
+        }
+
+        const originCCPayNativeClientCallJS = window.CCPayNativeClientCallJS
+
+        // 接关掉客户端回调
+        window.CCPayNativeClientCallJS = (msg) => {
+          this.dataFlow.push('<<<<<<<<<<< 接收数据 <<<<<<<<<<')
+          this.dataFlow.push(msg)
+
+          return originCCPayNativeClientCallJS.call(window, msg)
+        }
+      },
+      onClickLogin() {
+        ccpay.requestUserInfo()
+          .then((res) => {
+            this.userInfo = res
+          })
+          .catch(console.error)
+      },
+      onClickRequestDeposit() {
+        ccpay.requestDeposit({
+          token_symbol: 'BCH'
+        })
+          .then((res) => {
+            this.depositResult = res
+          })
+          .then(console.error)
+      }
+    }
+  })
+
+  vue.$mount('#container')
+</script>
 </body>
 </html>
