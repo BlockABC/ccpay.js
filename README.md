@@ -23,12 +23,13 @@ ccpay.requestUserInfo()
   .catch(console.log)
 ```
 响应
-```json
+```json5
 {
-    "sys_id": "893sfdjdu38dj389dj3",
+    "sys_id": "893sfdjdu38dj389dj3", // 该用户的唯一 id
     "nickname": "God",
     "avatar": "https://baidu.com/a.png",
-    "platform": "wechat"
+    "sns_platform": "wechat", // 该用户的来源平台，目前包括 wechat/telegram/discord/twitter/reddit
+    "sns_id": "222323243f33333", // 该用户在社交平台的 id，用于关联
 }
 ```
 
