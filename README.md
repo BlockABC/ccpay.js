@@ -16,6 +16,7 @@ console.log(ccpay.env.isCCPay) // true/false
 ```
 
 ### 登录
+获取用户 access_token，用于后台校验用户的真实性和请求的有效性。[CCPay 商户接口文档](https://hackmd.io/@blockabc/BJoGx_e1D#6-%E6%A0%A1%E9%AA%8C%E7%94%B1-CCTip%C2%B7APP-%E4%B8%8B%E5%8F%91%E7%9A%84-AccessToken)
 ```javascript
 ccpay.login().then(console.log).catch(console.error)
 ```
@@ -23,7 +24,7 @@ ccpay.login().then(console.log).catch(console.error)
 ```json5
 {
   "sys_id": "87333djfd33j3jk33jk2", // 用户在 cctip 平台的 id
-  "access_token": "accessTokenxxxxxxxxxxxxxxxxx", // 用户的临时 token
+  "access_token": "accessTokenxxxxxxxxxxxxxxxxx", // 用户的 access_token
   "expire_at": 1594613256, // token 有效期
 }
 ```
