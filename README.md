@@ -16,6 +16,19 @@ console.log(ccpay.env.isCCPay) // true/false
 ```
 
 ### 登录
+```javascript
+ccpay.login().then(console.log).catch(console.error)
+```
+响应
+```json5
+{
+  "sys_id": "87333djfd33j3jk33jk2", // 用户在 cctip 平台的 id
+  "access_token": "accessTokenxxxxxxxxxxxxxxxxx", // 用户的临时 token
+  "expire_at": 1594613256, // token 有效期
+}
+```
+
+### 获取用户信息
 目前通过白名单机制，白名单内部的 app 都可通过 SDK 直接登录并获取用户信息，无需用户手动授权。
 ```javascript
 ccpay.requestUserInfo()

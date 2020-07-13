@@ -54,6 +54,13 @@ export class CCPay {
     this.channel.off(event, callback)
   }
 
+  public login () {
+    return this.channel.request({
+      id: shortid('login'),
+      method: 'login',
+    })
+  }
+
   public requestUserInfo () {
     return this.channel.request({
       id: shortid('requestUserInfo'),
