@@ -65,7 +65,7 @@ ccpay.requestDeposit({
   .catch(console.error)
 ```
 充值成功返回值，失败返回空(null)
-```json
+```json5
 {
   "record_id": "record_id_xyz123",
   "symbol": "BCH",
