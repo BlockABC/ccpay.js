@@ -1,8 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CCPay Test</title>
+  <meta charset="UTF-8">
+  <title>CCPay Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, initial-scale=1, minimum-scale=1">
+  <style>
+    button {
+      padding: 5px 10px;
+    }
+    input {
+      font-size: 20px;
+    }
+
+    .section {
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 <div id="container"></div>
@@ -16,27 +29,39 @@
       <div>
         <div>
           <label>
-
               <input type="text" v-model="app_id">
               app_id
           </label>
         </div>
-        <div style="marginTop: 10px">
+
+        <div class="section">
           <label>
 
             <input type="text" v-model="business_id">
             business_id
           </label>
         </div>
-        <button @click="onClickInit">初始化</button>
-        <div>
-            <button @click="onClickLogin">获取用户数据</button>
+
+        <div class="section">
+          <button @click="onClickInit">初始化</button>
+        </div>
+
+        <div class="section">
+          <button @click="onClickLogin">登录</button>
+          <pre>{{loginResult}}</pre>
+        </div>
+
+        <div class="section">
+            <button @click="onClickGetUserInfo">获取用户数据</button>
             <pre>{{userInfo}}</pre>
         </div>
-        <div>
+
+        <div class="section">
+            <input v-model="depositParams.symbol" type="text">
             <button @click="onClickRequestDeposit">充值</button>
             <pre>{{depositResult}}</pre>
         </div>
+
         <h3>数据流</h3>
         <pre v-for="data in dataFlow">{{data}}</pre>
       </div>
@@ -46,8 +71,12 @@
         app_id: localStorage.getItem('ccpay_app_id') || '',
         business_id: localStorage.getItem('ccpay_business_id') || '',
 
+        loginResult: null,
         userInfo: null,
         depositResult: null,
+        depositParams: {
+          symbol: localStorage.getItem('loginParams.symbol') || 'BCH'
+        },
         dataFlow: [],
       }
     },
@@ -59,6 +88,9 @@
           app_id: this.app_id,
           business_id: this.business_id,
         })
+
+        localStorage.setItem('ccpay_app_id', this.app_id)
+        localStorage.setItem('ccpay_business_id', this.business_id)
 
         const originPostMessage = ccpay.channel.postMessage
 
@@ -74,12 +106,20 @@
         // 接关掉客户端回调
         window.CCPayNativeClientCallJS = (msg) => {
           this.dataFlow.push('<<<<<<<<<<< 接收数据 <<<<<<<<<<')
-          this.dataFlow.push(msg)
+          this.dataFlow.push(typeof msg === 'string' ? JSON.parse(msg) : msg)
 
           return originCCPayNativeClientCallJS.call(window, msg)
         }
       },
+
       onClickLogin() {
+        ccpay.login()
+          .then(res =>  {
+            this.loginResult = res
+          })
+          .catch(console.error)
+      },
+      onClickGetUserInfo() {
         ccpay.requestUserInfo()
           .then((res) => {
             this.userInfo = res
@@ -87,13 +127,13 @@
           .catch(console.error)
       },
       onClickRequestDeposit() {
-        ccpay.requestDeposit({
-          symbol: 'BCH'
-        })
+        ccpay.requestDeposit(this.depositParams)
           .then((res) => {
             this.depositResult = res
           })
           .then(console.error)
+
+        localStorage.setItem('loginParams.symbol', this.depositParams.symbol)
       }
     }
   })
