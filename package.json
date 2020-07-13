@@ -18,11 +18,13 @@
     "public/"
   ],
   "scripts": {
+    "prebuild": "rm -rf lib module dist",
     "build": "npm run build:esm && npm run build:cjs && npm run build:umd",
     "build:umd": "webpack --mode=production --config webpack.conf.js",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:analysis": "webpack --mode=production --env.analysis --config webpack.conf.js",
+    "prepublish": "npm run build",
     "dev": "webpack-dev-server --mode=development --config webpack.conf.js",
     "lint": "eslint --ext .ts --fix src/ test/",
     "lint:nofix": "eslint --ext .ts src/ test/",
