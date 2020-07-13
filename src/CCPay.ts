@@ -58,6 +58,9 @@ export class CCPay {
     return this.channel.request({
       id: shortid('login'),
       method: 'login',
+      params: {
+        app_id: this.app_id,
+      }
     })
   }
 
