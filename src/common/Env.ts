@@ -6,7 +6,7 @@ export class Env {
   isElectron = ua.includes('electron')
   isMac = ua.includes('mac')
   isWindows = ua.includes('windows')
-  isCCPay = ua.includes('ccpay')
+  isCCPay = ua.includes('ccpay') || ua.includes('cctipbox') || ua.includes('cctip')
 
   get language () {
     const matches: any = ua.match(/Language\/([a-zA-Z-_]+)/g) // 形如 Language/zh-CN
@@ -15,7 +15,7 @@ export class Env {
   }
 
   get clientVersion () {
-    const matches: any = ua.match(/CCPay\/([a-zA-Z-_]+)/g) // 形如 CCPay/1.2.3
+    const matches: any = ua.match(/(CCPay|CCTip|CCTipBox)\/([0-9.a-zA-Z-_]+)/gi) // 形如 CCPay/1.2.3
     const splitParts: string[] = matches?.[0]?.split('/') || []
     return splitParts[1]
   }

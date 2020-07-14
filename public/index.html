@@ -28,6 +28,15 @@
     template: `
       <div>
         <div>
+          {{ua}}
+          <div>
+            是否 CCPay：{{isCCPay}}
+          </div>
+          <div>
+            客户端版本: {{clientVersion}}
+          </div>
+        </div>
+        <div>
           <label>
               <input type="text" v-model="app_id">
               app_id
@@ -71,6 +80,10 @@
         app_id: localStorage.getItem('ccpay_app_id') || '',
         business_id: localStorage.getItem('ccpay_business_id') || '',
 
+        ua: '',
+        clientVersion: '',
+        isCCPay: false,
+
         loginResult: null,
         userInfo: null,
         depositResult: null,
@@ -88,6 +101,10 @@
           app_id: this.app_id,
           business_id: this.business_id,
         })
+
+        this.ua = window.navigator.userAgent
+        this.clientVersion = ccpay.env.clientVersion
+        this.isCCPay = ccpay.env.isCCPay
 
         localStorage.setItem('ccpay_app_id', this.app_id)
         localStorage.setItem('ccpay_business_id', this.business_id)
