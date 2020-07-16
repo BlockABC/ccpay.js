@@ -100,7 +100,7 @@ export class NativeChannel extends BasicChannel implements IChannel {
       this.emit(rpc.method, rpc.params)
     }
     else if (isRpcResponse(rpc)) {
-      const { id, error, result } = rpc
+      const { id, error, result, params } = rpc as any
 
       const responsePromise = this.responsePromiseHolder[id]
       delete this.responsePromiseHolder[id]
@@ -116,8 +116,8 @@ export class NativeChannel extends BasicChannel implements IChannel {
         responsePromise.reject(error)
       }
       else {
-        logger.debug('CCPayNativeClientResponse result:', result)
-        responsePromise.resolve(result)
+        logger.debug('CCPayNativeClientResponse result:', result || params) // todo: 为了兼容 ios 的 bug（返回了 params 而不是 result），临时把返回的 params 也返回，后续去掉 params 的返回
+        responsePromise.resolve(result || params)
       }
     }
     else {

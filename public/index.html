@@ -24,6 +24,10 @@
 <script>
   let ccpay
 
+  function log (info) {
+    new Image().src = JSON.stringify(info)
+  }
+
   const vue = new Vue({
     template: `
       <div>
@@ -134,21 +138,29 @@
           .then(res =>  {
             this.loginResult = res
           })
-          .catch(console.error)
+          .catch((err) => {
+            this.loginResult = err
+          })
       },
       onClickGetUserInfo() {
         ccpay.requestUserInfo()
           .then((res) => {
             this.userInfo = res
+            log(res)
           })
-          .catch(console.error)
+          .catch((err) => {
+            this.userInfo = err
+            log(err)
+          })
       },
       onClickRequestDeposit() {
         ccpay.requestDeposit(this.depositParams)
           .then((res) => {
             this.depositResult = res
           })
-          .then(console.error)
+          .then((err) => {
+            this.depositResult = err
+          })
 
         localStorage.setItem('loginParams.symbol', this.depositParams.symbol)
       }
