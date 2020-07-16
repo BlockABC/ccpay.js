@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-
+const abcConfig = require('./abc.config')
 const pkg = require('./package.json')
 
 const SRC = path.resolve(__dirname, 'src')
@@ -59,6 +59,7 @@ module.exports = function (env = {}, argv) {
     devtool: false,
     devServer: {
       host: '0.0.0.0',
+      port: abcConfig.port,
       disableHostCheck: true,
       contentBase: [
         path.resolve(__dirname, 'public'),

@@ -1,4 +1,6 @@
 const pkg = require('./package.json')
+const abcConfig = require('./abc.config')
+
 module.exports = {
   /**
    * Application configuration section
@@ -15,7 +17,7 @@ module.exports = {
       out_file: `logs/${pkg.name}.stdout.log`,
       log_date_format: 'MM-DD HH:mm:ss',
       env: {
-        PORT: 9200
+        PORT: abcConfig
       }
     }
   ]
