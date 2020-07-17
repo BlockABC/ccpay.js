@@ -4,7 +4,7 @@
 ## JS SDK
 ### 初始化
 ```javascript
-import CCPay from 'ccpay'
+import CCPay from 'ccpay.js'
 const ccpay = new CCPay({
   app_id: 'app_id_xxxx',
 })

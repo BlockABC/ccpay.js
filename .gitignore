@@ -27,3 +27,4 @@ types/
 .env
 yarn.lock
 package-lock.json
+package/
