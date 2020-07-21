@@ -2,11 +2,14 @@ import { NativeChannel } from './channel/NativeChannel'
 import { shortid } from './common/shortid'
 import { Env } from './common/Env'
 import { logger } from './common/logger'
+import { Webview } from './Webview'
 
 const PostMessageChannel = 'CCPayNativeBridge'
 
 export class CCPay {
   private readonly channel: NativeChannel
+
+  public webview: Webview
 
   env: Env
   version: string
@@ -17,7 +20,10 @@ export class CCPay {
   constructor ({ app_id, business_id }: {app_id: string, business_id: string}) {
     this.env = new Env()
     this.version = '0.0.1'
+
     this.channel = new NativeChannel(PostMessageChannel, logger, this.env)
+
+    this.webview = new Webview(this.channel)
 
     this.app_id = app_id
     this.business_id = business_id

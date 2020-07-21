@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, initial-scale=1, minimum-scale=1">
   <style>
     button {
-      padding: 5px 10px;
+      padding: 3px 10px;
+      vertical-align: bottom;
     }
     input {
       font-size: 20px;
@@ -70,10 +71,24 @@
         </div>
 
         <div class="section">
-            <input v-model="depositParams.symbol" type="text">
-            <button @click="onClickRequestDeposit">充值</button>
-            <pre>{{depositResult}}</pre>
+          <input v-model="depositParams.symbol" type="text">
+          <button @click="onClickRequestDeposit">充值</button>
+          <pre>{{depositResult}}</pre>
         </div>
+
+        <fieldset>
+          <legend>Webview</legend>
+          <div class="section">
+            <input v-model="openUrlInput" type="text">
+            <button @click="onClickOpenUrl">打开</button>
+          </div>
+
+          <div class="section">
+            <button @click="onClickClose">关闭</button>
+          </div>
+        </fieldset>
+
+
 
         <h3>数据流</h3>
         <pre v-for="data in dataFlow">{{data}}</pre>
@@ -94,6 +109,8 @@
         depositParams: {
           symbol: localStorage.getItem('loginParams.symbol') || 'BCH'
         },
+
+        openUrlInput: localStorage.getItem('openUrlInput') || '',
         dataFlow: [],
       }
     },
@@ -163,6 +180,15 @@
           })
 
         localStorage.setItem('loginParams.symbol', this.depositParams.symbol)
+      },
+
+      onClickOpenUrl() {
+        ccpay.webview.openUrl(this.openUrlInput)
+        localStorage.setItem('openUrlInput', this.openUrlInput)
+      },
+
+      onClickClose() {
+        ccpay.webview.close()
       }
     }
   })
