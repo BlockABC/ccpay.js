@@ -1,7 +1,7 @@
 import { NativeChannel } from './channel/NativeChannel'
 import { shortid } from './common/shortid'
 import { Env } from './common/Env'
-import { logger } from './common/logger'
+import { initDebug, logger } from './common/logger'
 import { Webview } from './Webview'
 
 const PostMessageChannel = 'CCPayNativeBridge'
@@ -17,7 +17,7 @@ export class CCPay {
   app_id: string
   business_id: string
 
-  constructor ({ app_id, business_id }: {app_id: string, business_id: string}) {
+  constructor ({ app_id, business_id, debug }: {app_id: string, business_id: string, debug: boolean}) {
     this.env = new Env()
     this.version = '0.0.1'
 
@@ -27,6 +27,10 @@ export class CCPay {
 
     this.app_id = app_id
     this.business_id = business_id
+
+    if (debug) {
+      initDebug()
+    }
   }
 
   public compareVersion (targetVersion = ''): -1 | 1 | 0 | null {

@@ -28,7 +28,8 @@ export abstract class BasicChannel extends EventEmitter {
         }
       }
 
-      logger.debug('BasicChannel.request send message:', rpc)
+      logger.debug('CCPay request >>>>>>>>')
+      logger.debug(rpc)
 
       this.postMessage(rpc)
     })

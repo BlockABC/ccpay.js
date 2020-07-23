@@ -22,13 +22,11 @@ if (typeof window !== 'undefined') {
  */
 export class NativeChannel extends BasicChannel implements IChannel {
   public env: Env
-  public log: Logger
   public requestChannel: string
 
   constructor (requestChannel: string, logger: Logger, env: Env) {
     super()
 
-    this.log = logger
     this.requestChannel = requestChannel
     this.env = env
 
@@ -47,7 +45,7 @@ export class NativeChannel extends BasicChannel implements IChannel {
     const requestChannel = this.requestChannel
 
     if (this.env.isIOS) {
-      this.log.debug(`NativeChannel send to ios ${requestChannel}`)
+      logger.debug(`NativeChannel send to ios ${requestChannel}`)
 
       if (window.webkit?.messageHandlers?.[requestChannel]?.postMessage) {
         window.webkit.messageHandlers[requestChannel].postMessage(data)
@@ -64,18 +62,18 @@ export class NativeChannel extends BasicChannel implements IChannel {
       }
     }
     else if (this.env.isAndroid) {
-      this.log.debug(`NativeChannel send to android ${requestChannel}`)
+      logger.debug(`NativeChannel send to android ${requestChannel}`)
       window[requestChannel].postMessage(this._dataToString(data))
     }
     else if (this.env.isElectron) {
-      this.log.debug(`NativeChannel send to electron ${requestChannel}`)
+      logger.debug(`NativeChannel send to electron ${requestChannel}`)
       window[requestChannel].postMessage(this._dataToString(data))
     }
     else {
-      this.log.info(`
-        Development runtime environment, no data will be sent.
-        You may mock response by 'window.CCPayNativeClientCallJS({ jsonrpc: '${data.jsonrpc}', id: '${(data as any).id}', result: your expected response object })'
-      `)
+      logger.info(`
+Development runtime environment, no data will be sent.
+You may mock response by 'window.CCPayNativeClientCallJS({ jsonrpc: '${data.jsonrpc}', id: '${(data as any).id}', result: your expected response object })'
+`)
     }
   }
 
@@ -96,6 +94,9 @@ export class NativeChannel extends BasicChannel implements IChannel {
       rpc = msg
     }
 
+    logger.debug('CCPay receive <<<<<<<<')
+    logger.debug(msg)
+
     if (isRpcEvent(rpc)) {
       this.emit(rpc.method, rpc.params)
     }
@@ -109,15 +110,12 @@ export class NativeChannel extends BasicChannel implements IChannel {
 
       if ((Date.now() - responsePromise.createdAt.getTime()) > 5000) logger.warn('CCPayNativeClientResponse take too long(more than 5000ms):', responsePromise.payload)
 
-      logger.debug('CCPayNativeClientResponse find and delete promise:', id)
-
       if (error) {
         logger.error('CCPayNativeClientResponse error:', error)
         responsePromise.reject(error)
       }
       else {
-        logger.debug('CCPayNativeClientResponse result:', result || params) // todo: 为了兼容 ios 的 bug（返回了 params 而不是 result），临时把返回的 params 也返回，后续去掉 params 的返回
-        responsePromise.resolve(result || params)
+        responsePromise.resolve(result || params)  // todo: 为了兼容 ios 的 bug（返回了 params 而不是 result），临时把返回的 params 也返回，后续去掉 params 的返回
       }
     }
     else {

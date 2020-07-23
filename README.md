@@ -7,6 +7,7 @@
 import CCPay from 'ccpay.js'
 const ccpay = new CCPay({
   app_id: 'app_id_xxxx',
+  debug: true, // 开启 debug 模式，将内部 log 打印出来
 })
 ```
 
