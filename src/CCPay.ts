@@ -94,4 +94,14 @@ export class CCPay {
       }
     })
   }
+
+  public openUrl ({ url }: { url: string }) {
+    return this.channel.request({
+      id: shortid('openUrl'),
+      method: 'openUrl',
+      params: {
+        url,
+      }
+    })
+  }
 }
