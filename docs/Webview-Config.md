@@ -1,33 +1,37 @@
 # Webview
-CCTip 客户端提供了Webview 的配置方式，可以配置 Webview 的显示形式，暂时只有 URL 形式的配置，具体如下。
 
-## _wv 参数
-_wv 参数一个十进制数字，其二进制形式的每一位代表一个功能的开启与否。
+[English Version](./Webview-Config.md)
+[中文版本](./Webview-Config.zh.md)
 
-如：?_wv=41(二进制 101001) 表示开启第一、第四、第六个功能（从低到高位）。
+CCTip Box client provide configuration for Webview. Web App can configure the appearance of Webview. For now, we only provide configure in URL as below:
+
+## _wv query
+_wv query is a decimal number, where each bit of the binary form represents whether a function is enabled or disabled.
+
+For example: ?_wv=41(101001 in binary) indicating the first, the forth, the sixth function is enabled
 
 #### 详细参数
-- `1` 是否横屏
-- `2` 是否全屏（全屏会隐藏状态栏、导航栏、返回按钮、标题，设置颜色对相关元素无效。保留胶囊按钮，此时可设置胶囊按钮位置）
-- `4` 导航栏是否隐藏（隐藏包括返回按钮、标题在内的导航栏，设置颜色对这些元素无效。保留胶囊按钮，此时可设置胶囊按钮位置）
-- `8` 状态栏是否隐藏（仅隐藏状态栏，不影响其他，隐藏后设置颜色对状态栏无效）
-- `16` 导航栏是否幽灵导航栏（幽灵不占位，非幽灵占位。不影响返回按钮、胶囊按钮、标题等；文字、背景色都可以正常设置；没有导航栏时（比如全屏、导航栏隐藏）该项不生效）
-- `32` 标题文字是否隐藏（隐藏后设置颜色对标题文字无效）
-- `64` 返回按钮是否隐藏（返回按钮的默认显示逻辑是：历史堆栈有记录时，显示返回按钮；否则不显示。）
+- `1` Enter the horizontal mode or not.
+- `2` Enter fullscreen mode or not(With fullscreen mode, Status Bar, NavBar, Back Button, and title will be hidden, configuration for these elements will be ignored. Capsule button will be kept, and you can set its position)
+- `4` Hide Navigation Bar or not.(Including Back Button and Title. `forecolor` and `backcolor` will not work for these elements. Capsule Button will be kept, and can be positioned)
+- `8` Hide Status Bar or not.
+- `16` Set Navigation Bar to Ghost Bar, which mean it will not take and place on the screen.
+- `32` Hide title text or not. if it is hide, `forecolor` will not take effect.
+- `64` Hide Back Button or not.
 
-**备注**： 顺序从上往下对应
+**Noted**： Params matches from top to bottom with its binary form lower to upper.
 
-## URL 参数
-- `bgcolor` : 设置导航栏和状态栏的背景色；支持 ffbbgg 或者 ffbbggaa(alpha通道，设置透明度) 两种格式。
+## URL Query
+- `bgcolor`: Set Navigation Bar and Status Bar's background color. It support 2 formats like ffbbgg and ffbbggaa(alpha channel, with opacity level)
 
-- `forecolor` : 设置导航栏和状态栏前景色；只支持白色(ffffff)、黑色(000000)，影响包括：状态栏文字、返回按钮、标题文字、关闭按钮的颜色。
+- `forecolor`: Set Navigation Bar and Status Bar's color. Only white(ffffff) and black(000000) are supported. It will take effect on Status Bar text, Back Button, Title and Close Button.
 
-- `menuButtonPosition`: 设置胶囊按钮位置。1/2/3/4，从左上角顺时针，1 左上，2 右上，3 右下，5 左下。
-    > 注意：目前要求，只有导航栏隐藏或全屏时（即 _wv & 2 > 0 || _wv & 4 > 0）才可设置按钮的位置。
+- `menuButtonPosition`: Set the position of Capsule button. 1/2/3/4，clockwise from top left，1 for left top，2 right top，3 for right bottom，5 for left bottom。
+    > Noted：We currently limit that you can only set this query when you hide the Navigation Bar or enter Fullscreen mode, which means `_wv & 2 >0 || _wv & 4 > 0`
 
-## 案例
-#### 全屏，胶囊按钮在左下角
+## Examples
+#### Fullscreen, with Capsule Button on the left bottom of the screen
 `xxx.html?_wv=2&menuButtonPosition=4`
 
-#### 隐藏状态栏和标题文字，设置导航栏为红色
+#### Hide Status Bar and Title, and set Navigation Bar to red
 `xxx.html?_wv=40&bgcolor=ff0000`
