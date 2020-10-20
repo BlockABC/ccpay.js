@@ -7,7 +7,7 @@ import { Webview } from './Webview'
 const PostMessageChannel = 'CCPayNativeBridge'
 
 export class CCPay {
-  private readonly channel: NativeChannel
+  readonly channel: NativeChannel
 
   public webview: Webview
 
@@ -101,6 +101,21 @@ export class CCPay {
       method: 'openUrl',
       params: {
         url,
+      }
+    })
+  }
+
+  /**
+   * open a url in system browser
+   * only ios is supported now
+   * @param url
+   */
+  public openBrowser ({ url }: { url: string }) {
+    return this.channel.request({
+      id: shortid('openBrowser'),
+      method: 'openBrowser',
+      params: {
+        url
       }
     })
   }
