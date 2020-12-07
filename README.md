@@ -4,6 +4,18 @@
 This lib can be used in CCTip Box to get user info, request payment, etc.
 
 ## JS SDK
+
+## Install
+Install via NPM
+```shell script
+npm install ccpay.js -S
+```
+
+Install via HTML Script
+```html
+<script src="https://cdn.jsdelivr.net/npm/ccpay.js"></script>
+```
+
 ### Initialize
 ```javascript
 import CCPay from 'ccpay.js'

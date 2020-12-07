@@ -4,6 +4,18 @@
 用于 CCTip 钱包中，用以获取用户信息、请求用户支付等操作。
 
 ## JS SDK
+## 安装
+通过 NPM 安装
+```shell script
+npm install ccpay.js -S
+```
+
+通过 HTML Script 引入
+```html
+<script src="https://cdn.jsdelivr.net/npm/ccpay.js"></script>
+```
+
+
 ### 初始化
 ```javascript
 import CCPay from 'ccpay.js'
