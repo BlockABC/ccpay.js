@@ -94,3 +94,8 @@ It will return a amount after depositing successfully, otherwise it will return 
 ```javascript
 console.log(ccpay.env.clientVersion) // '0.0.1'
 ```
+
+### Get client language
+```javascript
+console.log(ccpay.env.language) // 'en-US', 'zh-CN', 'ja-JP'
+```
