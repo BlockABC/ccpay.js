@@ -97,5 +97,5 @@ console.log(ccpay.env.clientVersion) // '0.0.1'
 
 ### Get client language
 ```javascript
-console.log(ccpay.env.language) // 'en-US', 'zh-CN', 'ja-JP'
+console.log(ccpay.env.language) // 'en', 'id-ID'
 ```
