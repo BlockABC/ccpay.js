@@ -44,7 +44,12 @@ export class NativeChannel extends BasicChannel implements IChannel {
   postMessage (data: JsonRpcRequest | JsonRpcEvent): void {
     const requestChannel = this.requestChannel
 
-    if (this.env.isIOS) {
+    // for react native version
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(JSON.stringify(data))
+    }
+    // for ios
+    else if (this.env.isIOS) {
       logger.debug(`NativeChannel send to ios ${requestChannel}`)
 
       if (window.webkit?.messageHandlers?.[requestChannel]?.postMessage) {
@@ -61,10 +66,12 @@ export class NativeChannel extends BasicChannel implements IChannel {
         }, 100)
       }
     }
+    // for android
     else if (this.env.isAndroid) {
       logger.debug(`NativeChannel send to android ${requestChannel}`)
       window[requestChannel].postMessage(this._dataToString(data))
     }
+    // for electron
     else if (this.env.isElectron) {
       logger.debug(`NativeChannel send to electron ${requestChannel}`)
       window[requestChannel].postMessage(this._dataToString(data))
