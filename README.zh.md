@@ -99,3 +99,10 @@ console.log(ccpay.env.clientVersion) // '0.0.1'
 ```javascript
 console.log(ccpay.env.language) // 'en', 'id-ID'
 ```
+
+
+## 开发
+启动本地的开发环境，并且唤起一个调试页面，可以在客户端调试接口的接入情况。
+```
+npm run dev
+```
