@@ -1,7 +1,7 @@
 {
   "name": "ccpay.js",
   "filename": "ccpay",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "The only and best SDK for CCPay application development.",
   "repository": "https://github.com/BlockABC/ccpay.js",
   "license": "MIT",
